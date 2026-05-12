@@ -87,43 +87,96 @@ ul {
 
 .nav {
     display: flex;
+    align-items: center;
     gap: 4px;
-    overflow-x: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    padding: 4px 0;
-}
-
-.nav::-webkit-scrollbar {
-    display: none;
 }
 
 .nav a {
     font-weight: 500;
     color: #64748b;
-    transition: color 0.2s;
-    white-space: nowrap;
-    padding: 8px 12px;
+    transition: all 0.2s;
+    padding: 8px 16px;
+    border-radius: 8px;
 }
 
 .nav a:hover {
     color: #2563eb;
+    background: rgba(37, 99, 235, 0.06);
 }
 
 .nav a.nav-link-active {
     color: #2563eb;
+    background: rgba(37, 99, 235, 0.1);
+}
+
+/* Tools Dropdown */
+.nav-item-dropdown {
     position: relative;
 }
 
-.nav a.nav-link-active::after {
-    content: '';
+.nav-dropdown-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    cursor: pointer;
+}
+
+.nav-dropdown-btn::after {
+    content: '▼';
+    font-size: 8px;
+    transition: transform 0.2s;
+}
+
+.nav-item-dropdown:hover .nav-dropdown-btn::after {
+    transform: rotate(180deg);
+}
+
+.nav-dropdown-menu {
     position: absolute;
-    bottom: -4px;
+    top: calc(100% + 8px);
     left: 0;
-    right: 0;
-    height: 2px;
-    background: #2563eb;
-    border-radius: 1px;
+    min-width: 200px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+    padding: 8px;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-8px);
+    transition: all 0.2s;
+    z-index: 200;
+}
+
+.nav-item-dropdown:hover .nav-dropdown-menu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.nav-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    border-radius: 8px;
+    color: #475569;
+    font-weight: 500;
+    transition: all 0.15s;
+}
+
+.nav-dropdown-item:hover {
+    background: #f1f5f9;
+    color: #2563eb;
+}
+
+.nav-dropdown-item.active {
+    background: rgba(37, 99, 235, 0.1);
+    color: #2563eb;
+}
+
+.nav-dropdown-icon {
+    font-size: 18px;
 }
 
 .btn.nav-btn-active {
