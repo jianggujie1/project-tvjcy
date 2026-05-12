@@ -9,9 +9,9 @@ let selectedPages = new Set();
 // DOM Elements
 const dropZone = document.getElementById('dropZone');
 const fileInput = document.getElementById('fileInput');
-const splitConfig = document.getElementById('splitConfig');
-const pdfName = document.getElementById('pdfName');
-const pdfPages = document.getElementById('pdfPages');
+const splitPanel = document.getElementById('splitPanel');
+const pdfNameEl = document.getElementById('pdfName');
+const pdfPagesEl = document.getElementById('pdfPages');
 const removeFileBtn = document.getElementById('removeFile');
 const pageGrid = document.getElementById('pageGrid');
 const selectAllBtn = document.getElementById('selectAll');
@@ -69,9 +69,10 @@ dropZone.addEventListener('drop', async (e) => {
     }
 });
 
-// Click drop zone to browse
+// Click drop zone to browse (fix double dialog)
 dropZone.addEventListener('click', (e) => {
     if (e.target === dropZone || e.target.classList.contains('drop-zone-content')) {
+        e.stopPropagation();
         fileInput.click();
     }
 });
@@ -83,12 +84,13 @@ async function loadPdf(file) {
     pdfDoc = await PDFDocument.load(pdfBytes);
     totalPages = pdfDoc.getPageCount();
 
-    pdfName.textContent = file.name;
-    pdfPages.textContent = `${totalPages} pages`;
+    pdfNameEl.textContent = file.name;
+    pdfPagesEl.textContent = `${totalPages} pages`;
 
     dropZone.style.display = 'none';
-    splitConfig.style.display = 'block';
+    splitPanel.style.display = 'block';
     result.style.display = 'none';
+    loading.style.display = 'none';
 
     renderPageGrid();
 }
@@ -106,6 +108,8 @@ function renderPageGrid() {
         pageEl.addEventListener('click', () => togglePage(i, pageEl));
         pageGrid.appendChild(pageEl);
     }
+
+    updateSplitBtn();
 }
 
 // Toggle page selection
@@ -117,7 +121,15 @@ function togglePage(page, el) {
         selectedPages.add(page);
         el.classList.add('selected');
     }
-    splitBtn.textContent = `Extract ${selectedPages.size} Page${selectedPages.size !== 1 ? 's' : ''}`;
+    updateSplitBtn();
+}
+
+// Update split button text
+function updateSplitBtn() {
+    const count = selectedPages.size;
+    splitBtn.textContent = count === 0
+        ? 'Extract Selected Pages'
+        : `Extract ${count} Page${count !== 1 ? 's' : ''}`;
 }
 
 // Select/Deselect all
@@ -126,13 +138,13 @@ selectAllBtn.addEventListener('click', () => {
         selectedPages.add(i);
     }
     document.querySelectorAll('.page-thumb').forEach(el => el.classList.add('selected'));
-    splitBtn.textContent = `Extract ${totalPages} Pages`;
+    updateSplitBtn();
 });
 
 deselectAllBtn.addEventListener('click', () => {
     selectedPages.clear();
     document.querySelectorAll('.page-thumb').forEach(el => el.classList.remove('selected'));
-    splitBtn.textContent = 'Extract Selected Pages';
+    updateSplitBtn();
 });
 
 // Remove file
@@ -143,7 +155,9 @@ removeFileBtn.addEventListener('click', () => {
     totalPages = 0;
     selectedPages.clear();
     dropZone.style.display = 'block';
-    splitConfig.style.display = 'none';
+    splitPanel.style.display = 'none';
+    result.style.display = 'none';
+    fileInput.value = '';
 });
 
 // Split PDF
@@ -154,7 +168,6 @@ splitBtn.addEventListener('click', async () => {
     if (activeMode === 'pages') {
         pagesToExtract = Array.from(selectedPages).sort((a, b) => a - b);
     } else {
-        // Parse ranges
         const rangeText = rangeInput.value.trim();
         if (!rangeText) {
             alert('Please enter page ranges');
@@ -173,11 +186,10 @@ splitBtn.addEventListener('click', async () => {
     }
 
     loading.style.display = 'block';
-    splitConfig.style.display = 'none';
+    splitPanel.style.display = 'none';
     result.style.display = 'none';
 
     try {
-        const zip = new JSZip();
         const tempDoc = await PDFDocument.create();
 
         for (const pageNum of pagesToExtract) {
@@ -188,39 +200,25 @@ splitBtn.addEventListener('click', async () => {
         const pdfOut = await tempDoc.save();
         const blob = new Blob([pdfOut], { type: 'application/pdf' });
 
-        // If single page, download directly
-        if (pagesToExtract.length === 1) {
-            loading.style.display = 'none';
-            result.style.display = 'block';
-            extractedCount.textContent = '1';
-            downloadBtn.onclick = () => {
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `page-${pagesToExtract[0]}.pdf`;
-                a.click();
-                URL.revokeObjectURL(url);
-            };
-        } else {
-            // Multiple pages - create ZIP
-            zip.file('extracted-pages.pdf', pdfOut);
-            const zipBlob = await zip.generateAsync({ type: 'blob' });
+        loading.style.display = 'none';
+        result.style.display = 'block';
+        extractedCount.textContent = pagesToExtract.length;
 
-            loading.style.display = 'none';
-            result.style.display = 'block';
-            extractedCount.textContent = pagesToExtract.length;
-            downloadBtn.onclick = () => {
-                const url = URL.createObjectURL(zipBlob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'extracted-pages.zip';
-                a.click();
-                URL.revokeObjectURL(url);
-            };
-        }
+        const filename = pagesToExtract.length === 1
+            ? `page-${pagesToExtract[0]}.pdf`
+            : 'extracted-pages.pdf';
+
+        downloadBtn.onclick = () => {
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.click();
+            URL.revokeObjectURL(url);
+        };
     } catch (error) {
         loading.style.display = 'none';
-        splitConfig.style.display = 'block';
+        splitPanel.style.display = 'block';
         alert('Error splitting PDF: ' + error.message);
     }
 });
@@ -249,8 +247,3 @@ function parseRanges(text) {
 
     return Array.from(pages).sort((a, b) => a - b);
 }
-
-// Load JSZip for ZIP creation
-const script = document.createElement('script');
-script.src = 'https://unpkg.com/jszip@3.10.1/dist/jszip.min.js';
-document.head.appendChild(script);

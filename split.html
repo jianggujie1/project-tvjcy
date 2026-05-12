@@ -7,10 +7,6 @@
     <meta name="description" content="Split a PDF into separate files or extract specific pages. Free, fast, no signup.">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="split.css">
-    <script>
-        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-    </script>
-    <script defer src="/_vercel/insights/script.js"></script>
     <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
 </head>
 <body>
@@ -55,8 +51,9 @@
                 </div>
             </div>
 
-            <!-- PDF Info & Page Selection -->
-            <div class="split-config" id="splitConfig" style="display: none;">
+            <!-- Split Config Panel -->
+            <div class="split-panel" id="splitPanel" style="display: none;">
+                <!-- PDF Info -->
                 <div class="pdf-info">
                     <span class="pdf-icon">📄</span>
                     <div class="pdf-details">
@@ -67,7 +64,7 @@
                 </div>
 
                 <!-- Extract Pages Mode -->
-                <div class="page-selector" id="pagesMode">
+                <div class="mode-content" id="pagesMode">
                     <h3>Select pages to extract</h3>
                     <div class="page-grid" id="pageGrid"></div>
                     <div class="page-actions">
@@ -77,13 +74,16 @@
                 </div>
 
                 <!-- Custom Ranges Mode -->
-                <div class="range-mode" id="rangesMode" style="display: none;">
+                <div class="mode-content" id="rangesMode" style="display: none;">
                     <h3>Enter page ranges (e.g., 1-3, 5, 7-10)</h3>
                     <input type="text" class="range-input" id="rangeInput" placeholder="1-3, 5, 7-10">
                     <p class="range-hint">Separate ranges with commas</p>
                 </div>
 
-                <button class="btn btn-primary btn-large" id="splitBtn">Extract Selected Pages</button>
+                <!-- Action Button -->
+                <div class="split-action">
+                    <button class="btn btn-primary btn-large" id="splitBtn">Extract Selected Pages</button>
+                </div>
             </div>
 
             <!-- Result -->
@@ -92,7 +92,7 @@
                     <span class="result-icon">✓</span>
                     <p>Extracted <span id="extractedCount">0</span> pages!</p>
                 </div>
-                <button class="btn btn-primary btn-large" id="downloadBtn">Download ZIP</button>
+                <button class="btn btn-primary btn-large" id="downloadBtn">Download</button>
             </div>
 
             <!-- Loading -->
