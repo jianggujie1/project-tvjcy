@@ -100,6 +100,26 @@ ul {
     color: #2563eb;
 }
 
+.nav a.nav-link-active {
+    color: #2563eb;
+    position: relative;
+}
+
+.nav a.nav-link-active::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #2563eb;
+    border-radius: 1px;
+}
+
+.btn.nav-btn-active {
+    background: #1d4ed8;
+}
+
 /* Hero */
 .hero {
     background: linear-gradient(135deg, #eff6ff 0%, #f8fafc 100%);
