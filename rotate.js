@@ -1,11 +1,13 @@
+// Set pdf.js worker
+pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+
 const { PDFDocument, degrees } = PDFLib;
 
 let pdfFile = null;
-let pdfBytes = null;
 let pdfDoc = null;
 let totalPages = 0;
-let selectedPages = new Set();
 let rotations = {}; // pageIndex -> rotation degrees
+let pageImages = []; // pageIndex -> dataUrl for thumbnail
 
 // DOM Elements
 const dropZone = document.getElementById('dropZone');
@@ -63,84 +65,129 @@ dropZone.addEventListener('click', (e) => {
 // Load PDF
 async function loadPdf(file) {
     pdfFile = file;
-    pdfBytes = await file.arrayBuffer();
-    pdfDoc = await PDFDocument.load(pdfBytes);
-    totalPages = pdfDoc.getPageCount();
-
     pdfName.textContent = file.name;
-    pdfPages.textContent = `${totalPages} pages`;
 
-    dropZone.style.display = 'none';
-    fileInfo.style.display = 'block';
-    pageSelector.style.display = 'block';
-    toolActions.style.display = 'flex';
-    result.style.display = 'none';
+    try {
+        const arrayBuffer = await file.arrayBuffer();
+        const pdfjsDoc = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+        totalPages = pdfjsDoc.numPages;
+        pdfPages.textContent = `${totalPages} pages`;
 
-    rotations = {};
-    renderPageGrid();
+        dropZone.style.display = 'none';
+        fileInfo.style.display = 'block';
+        pageSelector.style.display = 'block';
+        toolActions.style.display = 'flex';
+        result.style.display = 'none';
+
+        rotations = {};
+        pageImages = [];
+
+        await renderPageGrid(pdfjsDoc);
+
+        updateApplyBtn();
+    } catch (error) {
+        alert('Error loading PDF: ' + error.message);
+        resetUI();
+    }
 }
 
-// Render page grid
-function renderPageGrid() {
+// Render page grid with thumbnails
+async function renderPageGrid(pdfjsDoc) {
     pageGrid.innerHTML = '';
-    selectedPages.clear();
 
     for (let i = 0; i < totalPages; i++) {
         const pageEl = document.createElement('div');
         pageEl.className = 'page-thumb';
-        pageEl.textContent = i + 1;
         pageEl.dataset.page = i;
+        pageEl.style.cursor = 'pointer';
 
-        if (rotations[i]) {
-            pageEl.style.transform = `rotate(${rotations[i]}deg)`;
-            pageEl.classList.add('has-rotation');
-        }
-
+        // Add selection state on click
         pageEl.addEventListener('click', () => togglePage(i, pageEl));
         pageGrid.appendChild(pageEl);
-    }
 
-    updateApplyBtn();
+        // Render thumbnail in background
+        renderPageThumbnail(pdfjsDoc, i, pageEl);
+    }
+}
+
+// Render single page thumbnail
+async function renderPageThumbnail(pdfjsDoc, pageIndex, pageEl) {
+    try {
+        const page = await pdfjsDoc.getPage(pageIndex + 1);
+        const scale = 100 / page.getViewport({ scale: 1 }).width;
+        const viewport = page.getViewport({ scale });
+
+        const canvas = document.createElement('canvas');
+        canvas.width = viewport.width;
+        canvas.height = viewport.height;
+
+        await page.render({
+            canvasContext: canvas.getContext('2d'),
+            viewport: viewport
+        }).promise;
+
+        const img = document.createElement('img');
+        img.src = canvas.toDataURL('image/jpeg', 0.85);
+        pageImages[pageIndex] = canvas.toDataURL('image/jpeg', 0.85);
+
+        pageEl.innerHTML = '';
+        pageEl.appendChild(img);
+
+        // Add page number overlay
+        const numOverlay = document.createElement('span');
+        numOverlay.className = 'page-number';
+        numOverlay.textContent = pageIndex + 1;
+        pageEl.appendChild(numOverlay);
+
+    } catch (error) {
+        pageEl.innerHTML = `<span class="page-number">${pageIndex + 1}</span>`;
+    }
 }
 
 // Toggle page selection
-function togglePage(page, el) {
-    if (selectedPages.has(page)) {
-        selectedPages.delete(page);
-        el.classList.remove('selected');
+function togglePage(pageIndex, pageEl) {
+    if (pageEl.classList.contains('selected')) {
+        pageEl.classList.remove('selected');
     } else {
-        selectedPages.add(page);
-        el.classList.add('selected');
+        pageEl.classList.add('selected');
     }
     updateApplyBtn();
 }
 
 // Update apply button
 function updateApplyBtn() {
-    const hasChanges = Object.keys(rotations).length > 0;
-    applyBtn.disabled = !hasChanges;
-    applyBtn.textContent = hasChanges ? 'Apply Rotation' : 'Select Pages to Rotate';
+    const selectedCount = pageGrid.querySelectorAll('.page-thumb.selected').length;
+    if (selectedCount === 0) {
+        applyBtn.textContent = 'Select pages to rotate';
+        applyBtn.disabled = true;
+    } else {
+        applyBtn.textContent = `Rotate ${selectedCount} page${selectedCount !== 1 ? 's' : ''}`;
+        applyBtn.disabled = false;
+    }
 }
 
 // Rotate selected pages
-function rotateSelected(degrees) {
-    selectedPages.forEach(pageIndex => {
-        const current = rotations[pageIndex] || 0;
-        rotations[pageIndex] = (current + degrees + 360) % 360;
-    });
+function rotateSelected(deg) {
+    const selectedEls = pageGrid.querySelectorAll('.page-thumb.selected');
 
-    // Update visual
-    const pageEls = pageGrid.querySelectorAll('.page-thumb');
-    for (let i = 0; i < totalPages; i++) {
-        const el = pageEls[i];
-        if (rotations[i]) {
-            el.style.transform = `rotate(${rotations[i]}deg)`;
+    if (selectedEls.length === 0) {
+        alert('Please select pages first');
+        return;
+    }
+
+    selectedEls.forEach(el => {
+        const pageIndex = parseInt(el.dataset.page);
+        const current = rotations[pageIndex] || 0;
+        rotations[pageIndex] = (current + deg + 360) % 360;
+
+        // Apply visual rotation
+        el.style.transform = `rotate(${rotations[pageIndex]}deg)`;
+        if (rotations[pageIndex] !== 0) {
             el.classList.add('has-rotation');
         } else {
-            el.style.transform = '';
             el.classList.remove('has-rotation');
         }
-    }
+    });
 
     updateApplyBtn();
 }
@@ -156,11 +203,9 @@ applyBtn.addEventListener('click', async () => {
     toolActions.style.display = 'none';
 
     try {
-        // Reload the PDF
         const pdfBytesCopy = await pdfFile.arrayBuffer();
         const doc = await PDFDocument.load(pdfBytesCopy);
 
-        // Apply rotations
         for (const [pageIndex, rotation] of Object.entries(rotations)) {
             const page = doc.getPage(parseInt(pageIndex));
             page.setRotation(degrees(rotation));
@@ -173,7 +218,12 @@ applyBtn.addEventListener('click', async () => {
         result.style.display = 'block';
 
         downloadBtn.onclick = () => {
-            downloadBlob(blob, 'rotated.pdf');
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'rotated.pdf';
+            a.click();
+            URL.revokeObjectURL(url);
         };
     } catch (error) {
         loading.style.display = 'none';
@@ -189,11 +239,10 @@ removeFileBtn.addEventListener('click', resetUI);
 // Reset UI
 function resetUI() {
     pdfFile = null;
-    pdfBytes = null;
     pdfDoc = null;
     totalPages = 0;
-    selectedPages.clear();
     rotations = {};
+    pageImages = [];
     fileInput.value = '';
 
     dropZone.style.display = 'block';
@@ -201,14 +250,4 @@ function resetUI() {
     pageSelector.style.display = 'none';
     toolActions.style.display = 'none';
     result.style.display = 'none';
-}
-
-// Download helper
-function downloadBlob(blob, filename) {
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = filename;
-    a.click();
-    URL.revokeObjectURL(url);
 }

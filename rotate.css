@@ -20,7 +20,65 @@
     gap: 12px;
 }
 
-/* Override page-grid from split.css for better fit */
-.file-list .page-grid {
+/* Page Grid */
+.page-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 8px;
     max-height: 320px;
+    overflow-y: auto;
+    padding: 8px;
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+}
+
+.page-thumb {
+    aspect-ratio: 3/4;
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: all 0.15s;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.page-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.page-thumb:hover {
+    border-color: #2563eb;
+}
+
+.page-thumb.selected {
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
+}
+
+.page-thumb.has-rotation {
+    border-color: #f59e0b;
+}
+
+.page-number {
+    position: absolute;
+    bottom: 4px;
+    right: 4px;
+    background: rgba(0,0,0,0.6);
+    color: white;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+@media (max-width: 640px) {
+    .page-grid {
+        grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+    }
 }

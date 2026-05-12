@@ -87,13 +87,23 @@ ul {
 
 .nav {
     display: flex;
-    gap: 32px;
+    gap: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 4px 0;
+}
+
+.nav::-webkit-scrollbar {
+    display: none;
 }
 
 .nav a {
     font-weight: 500;
     color: #64748b;
     transition: color 0.2s;
+    white-space: nowrap;
+    padding: 8px 12px;
 }
 
 .nav a:hover {
@@ -386,15 +396,24 @@ ul {
         grid-template-columns: 1fr;
     }
 
-    .steps {
-        flex-direction: column;
-        align-items: center;
-        gap: 40px;
-    }
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    overflow-x: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    padding: 4px 0;
+}
 
-    .features {
-        grid-template-columns: 1fr;
-    }
+.nav::-webkit-scrollbar {
+    display: none;
+}
+
+.nav a {
+    white-space: nowrap;
+    padding: 8px 12px;
+}
 
     .pricing-grid {
         flex-direction: column;
