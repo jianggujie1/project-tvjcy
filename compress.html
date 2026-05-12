@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compress PDF Online — PDFNest</title>
+    <meta name="description" content="Reduce PDF file size without losing quality. Free, fast, no signup required.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="merge.css">
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-inner">
+            <a href="/" class="logo">PDFNest</a>
+            <nav class="nav">
+                <a href="merge.html">Merge PDF</a>
+                <a href="split.html">Split PDF</a>
+                <a href="compress.html" class="nav-link-active">Compress PDF</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#blog">Blog</a>
+                <a href="#contact">Contact</a>
+            </nav>
+            <a href="/" class="btn btn-primary">Home</a>
+        </div>
+    </header>
+
+    <!-- Tool Page -->
+    <section class="tool-page">
+        <div class="container">
+            <div class="tool-header">
+                <h1>Compress PDF Online</h1>
+                <p>Reduce file size without losing quality. Simple and fast.</p>
+            </div>
+
+            <!-- Drop Zone -->
+            <div class="drop-zone" id="dropZone">
+                <div class="drop-zone-content">
+                    <div class="drop-icon">📄</div>
+                    <p>Drag & drop a PDF file here</p>
+                    <span>or</span>
+                    <label class="btn btn-primary">
+                        Browse File
+                        <input type="file" id="fileInput" accept=".pdf" hidden>
+                    </label>
+                </div>
+            </div>
+
+            <!-- File Info -->
+            <div class="file-list" id="fileInfo" style="display: none;">
+                <div class="file-item">
+                    <span class="file-icon">📄</span>
+                    <div class="file-info">
+                        <div class="file-name" id="pdfName">file.pdf</div>
+                        <div class="file-size" id="pdfSize">0 KB</div>
+                    </div>
+                    <button class="file-remove" id="removeFile">×</button>
+                </div>
+            </div>
+
+            <!-- Quality Selection -->
+            <div class="quality-section" id="qualitySection" style="display: none;">
+                <h3>Select compression level</h3>
+                <div class="quality-options">
+                    <label class="quality-option">
+                        <input type="radio" name="quality" value="high" checked>
+                        <div class="quality-card">
+                            <span class="quality-name">Recommended</span>
+                            <span class="quality-desc">Best balance of size and quality</span>
+                        </div>
+                    </label>
+                    <label class="quality-option">
+                        <input type="radio" name="quality" value="low">
+                        <div class="quality-card">
+                            <span class="quality-name">Extreme</span>
+                            <span class="quality-desc">Smallest file size, lower quality</span>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="tool-actions" id="toolActions" style="display: none;">
+                <button class="btn btn-primary btn-large" id="compressBtn">Compress PDF</button>
+                <button class="btn btn-outline" id="clearBtn">Clear</button>
+            </div>
+
+            <!-- Result -->
+            <div class="result" id="result" style="display: none;">
+                <div class="result-success">
+                    <span class="result-icon">✓</span>
+                    <p id="resultText">PDF compressed successfully!</p>
+                    <p class="result-savings" id="resultSavings">Saved 50%</p>
+                </div>
+                <button class="btn btn-primary btn-large" id="downloadBtn">Download</button>
+            </div>
+
+            <!-- Loading -->
+            <div class="loading" id="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>Compressing your PDF...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-inner">
+            <div class="footer-brand">
+                <div class="logo">PDFNest</div>
+                <p>Free online PDF tools. No signup, no ads.</p>
+            </div>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Blog</a>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 PDFNest. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="compress.js"></script>
+</body>
+</html>
