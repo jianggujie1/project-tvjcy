@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Convert to PDF Online — PDFNest</title>
-    <meta name="description" content="Convert images, Word, Excel to PDF online. Free, fast, no signup required.">
+    <title>PDF to JPG Online — PDFNest</title>
+    <meta name="description" content="Convert PDF pages to JPG images. Extract high-quality images from PDF. Free, fast.">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="merge.css">
+    <link rel="stylesheet" href="jpg.css">
     <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 </head>
 <body>
     <!-- Header -->
@@ -20,7 +22,7 @@
                 <a href="compress.html">Compress PDF</a>
                 <a href="rotate.html">Rotate PDF</a>
                 <a href="convert.html">Convert to PDF</a>
-                <a href="jpg.html">PDF to JPG</a>
+                <a href="jpg.html" class="nav-link-active">PDF to JPG</a>
                 <a href="#pricing">Pricing</a>
                 <a href="#blog">Blog</a>
                 <a href="#contact">Contact</a>
@@ -33,49 +35,63 @@
     <section class="tool-page">
         <div class="container">
             <div class="tool-header">
-                <h1>Convert to PDF Online</h1>
-                <p>Turn images (JPG, PNG) into PDF documents. Drag to reorder, then download.</p>
+                <h1>PDF to JPG Online</h1>
+                <p>Convert PDF pages to high-quality JPG images. Each page becomes a separate image.</p>
             </div>
 
             <!-- Drop Zone -->
             <div class="drop-zone" id="dropZone">
                 <div class="drop-zone-content">
-                    <div class="drop-icon">🖼</div>
-                    <p>Drag & drop images here</p>
+                    <div class="drop-icon">📄</div>
+                    <p>Drag & drop a PDF file here</p>
                     <span>or</span>
                     <label class="btn btn-primary">
-                        Browse Files
-                        <input type="file" id="fileInput" accept="image/*" multiple hidden>
+                        Browse File
+                        <input type="file" id="fileInput" accept=".pdf" hidden>
                     </label>
                 </div>
             </div>
 
-            <!-- File List -->
-            <div class="file-list" id="fileList">
-                <div class="file-list-empty" id="emptyState">
-                    <p>No images added yet</p>
+            <!-- File Info -->
+            <div class="file-list" id="fileInfo" style="display: none;">
+                <div class="file-item">
+                    <span class="file-icon">📄</span>
+                    <div class="file-info">
+                        <div class="file-name" id="pdfName">file.pdf</div>
+                        <div class="file-size" id="pdfPages">0 pages</div>
+                    </div>
+                    <button class="file-remove" id="removeFile">×</button>
+                </div>
+            </div>
+
+            <!-- Page Thumbnails -->
+            <div class="file-list" id="pageSelector" style="display: none;">
+                <div class="page-grid" id="pageGrid"></div>
+                <div class="page-actions">
+                    <button class="btn btn-outline btn-small" id="selectAll">Select All</button>
+                    <button class="btn btn-outline btn-small" id="deselectAll">Deselect All</button>
                 </div>
             </div>
 
             <!-- Actions -->
             <div class="tool-actions" id="toolActions" style="display: none;">
-                <button class="btn btn-primary btn-large" id="convertBtn">Create PDF</button>
-                <button class="btn btn-outline" id="clearBtn">Clear All</button>
+                <button class="btn btn-primary btn-large" id="convertBtn" disabled>Convert to JPG</button>
+                <button class="btn btn-outline" id="clearBtn">Clear</button>
             </div>
 
             <!-- Result -->
             <div class="result" id="result" style="display: none;">
                 <div class="result-success">
                     <span class="result-icon">✓</span>
-                    <p>PDF created successfully!</p>
+                    <p id="resultText">Converted successfully!</p>
                 </div>
-                <button class="btn btn-primary btn-large" id="downloadBtn">Download PDF</button>
+                <button class="btn btn-primary btn-large" id="downloadBtn">Download ZIP</button>
             </div>
 
             <!-- Loading -->
             <div class="loading" id="loading" style="display: none;">
                 <div class="spinner"></div>
-                <p>Creating your PDF...</p>
+                <p>Converting to JPG...</p>
             </div>
         </div>
     </section>
@@ -98,6 +114,6 @@
         </div>
     </footer>
 
-    <script src="convert.js"></script>
+    <script src="jpg.js"></script>
 </body>
 </html>
