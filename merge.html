@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Merge PDFs Online — PDFNest</title>
+    <meta name="description" content="Merge multiple PDF files into one document. Free, fast, no signup required.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="merge.css">
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container header-inner">
+            <a href="/" class="logo">PDFNest</a>
+            <nav class="nav">
+                <a href="/#tools">Tools</a>
+                <a href="/#pricing">Pricing</a>
+                <a href="/#blog">Blog</a>
+                <a href="/#contact">Contact</a>
+            </nav>
+            <a href="/" class="btn btn-primary">Home</a>
+        </div>
+    </header>
+
+    <!-- Tool Page -->
+    <section class="tool-page">
+        <div class="container">
+            <div class="tool-header">
+                <h1>Merge PDFs Online</h1>
+                <p>Combine multiple PDF files into one document. Drag to reorder, then download.</p>
+            </div>
+
+            <!-- Drop Zone -->
+            <div class="drop-zone" id="dropZone">
+                <div class="drop-zone-content">
+                    <div class="drop-icon">📄</div>
+                    <p>Drag & drop PDF files here</p>
+                    <span>or</span>
+                    <label class="btn btn-primary">
+                        Browse Files
+                        <input type="file" id="fileInput" accept=".pdf" multiple hidden>
+                    </label>
+                </div>
+            </div>
+
+            <!-- File List -->
+            <div class="file-list" id="fileList">
+                <div class="file-list-empty" id="emptyState">
+                    <p>No files added yet</p>
+                </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="tool-actions" id="toolActions" style="display: none;">
+                <button class="btn btn-primary btn-large" id="mergeBtn">Merge PDFs</button>
+                <button class="btn btn-outline" id="clearBtn">Clear All</button>
+            </div>
+
+            <!-- Result -->
+            <div class="result" id="result" style="display: none;">
+                <div class="result-success">
+                    <span class="result-icon">✓</span>
+                    <p>PDFs merged successfully!</p>
+                </div>
+                <button class="btn btn-primary btn-large" id="downloadBtn">Download Merged PDF</button>
+            </div>
+
+            <!-- Loading -->
+            <div class="loading" id="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>Merging your PDFs...</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-inner">
+            <div class="footer-brand">
+                <div class="logo">PDFNest</div>
+                <p>Free online PDF tools. No signup, no ads.</p>
+            </div>
+            <div class="footer-links">
+                <a href="#">Privacy Policy</a>
+                <a href="#">Terms of Service</a>
+                <a href="#">Blog</a>
+                <a href="#">Contact</a>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 PDFNest. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="merge.js"></script>
+</body>
+</html>

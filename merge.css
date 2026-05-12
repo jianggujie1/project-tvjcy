@@ -1,0 +1,222 @@
+/* Tool Page */
+.tool-page {
+    min-height: calc(100vh - 64px);
+    padding: 60px 0;
+    background: #f8fafc;
+}
+
+.tool-header {
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.tool-header h1 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.tool-header p {
+    font-size: 18px;
+    color: #64748b;
+}
+
+/* Drop Zone */
+.drop-zone {
+    border: 2px dashed #cbd5e1;
+    border-radius: 12px;
+    padding: 60px 20px;
+    text-align: center;
+    transition: all 0.2s;
+    background: white;
+    margin-bottom: 24px;
+}
+
+.drop-zone.drag-over {
+    border-color: #2563eb;
+    background: #eff6ff;
+}
+
+.drop-zone-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.drop-icon {
+    font-size: 48px;
+    margin-bottom: 8px;
+}
+
+.drop-zone-content p {
+    font-size: 18px;
+    color: #64748b;
+}
+
+.drop-zone-content span {
+    font-size: 14px;
+    color: #94a3b8;
+}
+
+/* File List */
+.file-list {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 24px;
+    min-height: 100px;
+}
+
+.file-list-empty {
+    text-align: center;
+    padding: 24px;
+    color: #94a3b8;
+}
+
+.file-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px;
+    border-bottom: 1px solid #f1f5f9;
+    cursor: grab;
+    transition: background 0.2s;
+}
+
+.file-item:last-child {
+    border-bottom: none;
+}
+
+.file-item:hover {
+    background: #f8fafc;
+}
+
+.file-item.dragging {
+    opacity: 0.5;
+}
+
+.file-item.drag-over {
+    border-top: 2px solid #2563eb;
+}
+
+.file-icon {
+    font-size: 24px;
+}
+
+.file-info {
+    flex: 1;
+}
+
+.file-name {
+    font-weight: 500;
+    color: #0f172a;
+    word-break: break-all;
+}
+
+.file-size {
+    font-size: 13px;
+    color: #94a3b8;
+}
+
+.file-remove {
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: transparent;
+    color: #94a3b8;
+    cursor: pointer;
+    border-radius: 6px;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+}
+
+.file-remove:hover {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.drag-handle {
+    color: #cbd5e1;
+    cursor: grab;
+    font-size: 18px;
+}
+
+/* Actions */
+.tool-actions {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+/* Result */
+.result {
+    text-align: center;
+    padding: 40px;
+}
+
+.result-success {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.result-icon {
+    width: 64px;
+    height: 64px;
+    background: #dcfce7;
+    color: #16a34a;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+}
+
+.result-success p {
+    font-size: 20px;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+/* Loading */
+.loading {
+    text-align: center;
+    padding: 40px;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid #e2e8f0;
+    border-top-color: #2563eb;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 16px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.loading p {
+    color: #64748b;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .tool-header h1 {
+        font-size: 24px;
+    }
+
+    .drop-zone {
+        padding: 40px 20px;
+    }
+}
