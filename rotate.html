@@ -3,14 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Merge PDFs Online — PDFNest</title>
-    <meta name="description" content="Merge multiple PDF files into one document. Free, fast, no signup required.">
+    <title>Rotate PDF Online — PDFNest</title>
+    <meta name="description" content="Rotate PDF pages online. Fix crooked pages in seconds. Free, fast, no signup.">
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="merge.css">
-    <script>
-        window.va = window.va || function () { (window.vaq = window.vaq || []).push(arguments); };
-    </script>
-    <script defer src="/_vercel/insights/script.js"></script>
+    <link rel="stylesheet" href="rotate.css">
     <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
 </head>
 <body>
@@ -22,7 +19,7 @@
                 <a href="merge.html">Merge PDF</a>
                 <a href="split.html">Split PDF</a>
                 <a href="compress.html">Compress PDF</a>
-                <a href="rotate.html">Rotate PDF</a>
+                <a href="rotate.html" class="nav-link-active">Rotate PDF</a>
                 <a href="#pricing">Pricing</a>
                 <a href="#blog">Blog</a>
                 <a href="#contact">Contact</a>
@@ -35,49 +32,66 @@
     <section class="tool-page">
         <div class="container">
             <div class="tool-header">
-                <h1>Merge PDFs Online</h1>
-                <p>Combine multiple PDF files into one document. Drag to reorder, then download.</p>
+                <h1>Rotate PDF Online</h1>
+                <p>Fix crooked pages in your PDF. Rotate single or multiple pages at once.</p>
             </div>
 
             <!-- Drop Zone -->
             <div class="drop-zone" id="dropZone">
                 <div class="drop-zone-content">
                     <div class="drop-icon">📄</div>
-                    <p>Drag & drop PDF files here</p>
+                    <p>Drag & drop a PDF file here</p>
                     <span>or</span>
                     <label class="btn btn-primary">
-                        Browse Files
-                        <input type="file" id="fileInput" accept=".pdf" multiple hidden>
+                        Browse File
+                        <input type="file" id="fileInput" accept=".pdf" hidden>
                     </label>
                 </div>
             </div>
 
-            <!-- File List -->
-            <div class="file-list" id="fileList">
-                <div class="file-list-empty" id="emptyState">
-                    <p>No files added yet</p>
+            <!-- File Info -->
+            <div class="file-list" id="fileInfo" style="display: none;">
+                <div class="file-item">
+                    <span class="file-icon">📄</span>
+                    <div class="file-info">
+                        <div class="file-name" id="pdfName">file.pdf</div>
+                        <div class="file-size" id="pdfPages">0 pages</div>
+                    </div>
+                    <button class="file-remove" id="removeFile">×</button>
+                </div>
+            </div>
+
+            <!-- Page Grid -->
+            <div class="file-list" id="pageSelector" style="display: none;">
+                <div class="page-grid" id="pageGrid"></div>
+                <div class="rotate-controls">
+                    <span class="rotate-label">Selected pages rotate by:</span>
+                    <div class="rotate-buttons">
+                        <button class="btn btn-outline" id="rotateLeft">↺ 90° Left</button>
+                        <button class="btn btn-outline" id="rotateRight">↻ 90° Right</button>
+                    </div>
                 </div>
             </div>
 
             <!-- Actions -->
             <div class="tool-actions" id="toolActions" style="display: none;">
-                <button class="btn btn-primary btn-large" id="mergeBtn">Merge PDFs</button>
-                <button class="btn btn-outline" id="clearBtn">Clear All</button>
+                <button class="btn btn-primary btn-large" id="applyBtn" disabled>Apply Rotation</button>
+                <button class="btn btn-outline" id="clearBtn">Clear</button>
             </div>
 
             <!-- Result -->
             <div class="result" id="result" style="display: none;">
                 <div class="result-success">
                     <span class="result-icon">✓</span>
-                    <p>PDFs merged successfully!</p>
+                    <p>PDF rotated successfully!</p>
                 </div>
-                <button class="btn btn-primary btn-large" id="downloadBtn">Download Merged PDF</button>
+                <button class="btn btn-primary btn-large" id="downloadBtn">Download</button>
             </div>
 
             <!-- Loading -->
             <div class="loading" id="loading" style="display: none;">
                 <div class="spinner"></div>
-                <p>Merging your PDFs...</p>
+                <p>Rotating your PDF...</p>
             </div>
         </div>
     </section>
@@ -93,7 +107,6 @@
                 <a href="#">Privacy Policy</a>
                 <a href="#">Terms of Service</a>
                 <a href="#">Blog</a>
-                <a href="#">Contact</a>
             </div>
             <div class="footer-bottom">
                 <p>&copy; 2026 PDFNest. All rights reserved.</p>
@@ -101,6 +114,6 @@
         </div>
     </footer>
 
-    <script src="merge.js"></script>
+    <script src="rotate.js"></script>
 </body>
 </html>
