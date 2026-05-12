@@ -28,6 +28,7 @@ const clearBtn = document.getElementById('clearBtn');
 const result = document.getElementById('result');
 const resultText = document.getElementById('resultText');
 const downloadBtn = document.getElementById('downloadBtn');
+const resetBtn = document.getElementById('resetBtn');
 const loading = document.getElementById('loading');
 
 // File Input
@@ -312,3 +313,21 @@ function downloadBlob(blob, filename) {
     a.click();
     URL.revokeObjectURL(url);
 }
+
+// Reset - process another
+resetBtn.addEventListener('click', () => {
+    pdfFile = null;
+    pdfBytes = null;
+    pdfDoc = null;
+    totalPages = 0;
+    selectedPages.clear();
+    currentMode = 'pages';
+    fileInput.value = '';
+    dropZone.style.display = 'block';
+    fileInfo.style.display = 'none';
+    pageSelector.style.display = 'none';
+    splitModes.style.display = 'none';
+    result.style.display = 'none';
+    toolActions.style.display = 'none';
+    pageGrid.innerHTML = '';
+});

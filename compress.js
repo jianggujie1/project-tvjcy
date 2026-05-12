@@ -18,6 +18,7 @@ const result = document.getElementById('result');
 const resultText = document.getElementById('resultText');
 const resultSavings = document.getElementById('resultSavings');
 const downloadBtn = document.getElementById('downloadBtn');
+const resetBtn = document.getElementById('resetBtn');
 const loading = document.getElementById('loading');
 
 // File Input
@@ -167,3 +168,16 @@ function downloadBlob(blob, filename) {
     a.click();
     URL.revokeObjectURL(url);
 }
+
+// Reset - process another
+resetBtn.addEventListener('click', () => {
+    pdfFile = null;
+    pdfDoc = null;
+    originalSize = 0;
+    fileInput.value = '';
+    dropZone.style.display = 'block';
+    fileInfo.style.display = 'none';
+    qualitySection.style.display = 'none';
+    result.style.display = 'none';
+    toolActions.style.display = 'none';
+});

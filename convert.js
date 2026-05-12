@@ -12,6 +12,7 @@ const convertBtn = document.getElementById('convertBtn');
 const clearBtn = document.getElementById('clearBtn');
 const result = document.getElementById('result');
 const downloadBtn = document.getElementById('downloadBtn');
+const resetBtn = document.getElementById('resetBtn');
 const loading = document.getElementById('loading');
 
 // File Input
@@ -198,4 +199,14 @@ convertBtn.addEventListener('click', async () => {
         toolActions.style.display = 'flex';
         alert('Error creating PDF: ' + error.message);
     }
+});
+
+// Reset - process another
+resetBtn.addEventListener('click', () => {
+    files = [];
+    fileInput.value = '';
+    dropZone.style.display = 'block';
+    result.style.display = 'none';
+    toolActions.style.display = 'none';
+    renderFileList();
 });

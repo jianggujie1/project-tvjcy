@@ -23,6 +23,7 @@ const clearBtn = document.getElementById('clearBtn');
 const result = document.getElementById('result');
 const resultText = document.getElementById('resultText');
 const downloadBtn = document.getElementById('downloadBtn');
+const resetBtn = document.getElementById('resetBtn');
 const loading = document.getElementById('loading');
 
 // File Input
@@ -284,6 +285,9 @@ convertBtn.addEventListener('click', async () => {
         alert('Error converting PDF: ' + error.message);
     }
 });
+
+// Reset - process another
+resetBtn.addEventListener('click', resetUI);
 
 // Load JSZip dynamically
 const script = document.createElement('script');

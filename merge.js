@@ -13,6 +13,7 @@ const mergeBtn = document.getElementById('mergeBtn');
 const clearBtn = document.getElementById('clearBtn');
 const result = document.getElementById('result');
 const downloadBtn = document.getElementById('downloadBtn');
+const resetBtn = document.getElementById('resetBtn');
 const loading = document.getElementById('loading');
 
 // File Input
@@ -193,4 +194,15 @@ downloadBtn.addEventListener('click', () => {
     a.download = 'merged.pdf';
     a.click();
     URL.revokeObjectURL(url);
+});
+
+// Reset - process another
+resetBtn.addEventListener('click', () => {
+    files = [];
+    mergedPdfBytes = null;
+    fileInput.value = '';
+    dropZone.style.display = 'block';
+    result.style.display = 'none';
+    toolActions.style.display = 'none';
+    renderFileList();
 });

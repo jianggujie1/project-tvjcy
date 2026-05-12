@@ -25,6 +25,7 @@ const applyBtn = document.getElementById('applyBtn');
 const clearBtn = document.getElementById('clearBtn');
 const result = document.getElementById('result');
 const downloadBtn = document.getElementById('downloadBtn');
+const resetBtn = document.getElementById('resetBtn');
 const loading = document.getElementById('loading');
 
 // File Input
@@ -251,3 +252,6 @@ function resetUI() {
     toolActions.style.display = 'none';
     result.style.display = 'none';
 }
+
+// Reset - process another
+resetBtn.addEventListener('click', resetUI);
