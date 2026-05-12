@@ -203,12 +203,49 @@ convertBtn.addEventListener('click', async () => {
     toolActions.style.display = 'none';
 
     try {
-        const zip = new JSZip();
         const sortedPages = Array.from(selectedPages).sort((a, b) => a - b);
+
+        // For single page, download JPG directly
+        if (sortedPages.length === 1) {
+            const pageIndex = sortedPages[0];
+            const page = await pdfDoc.getPage(pageIndex + 1);
+            const scale = 2;
+            const viewport = page.getViewport({ scale });
+
+            const canvas = document.createElement('canvas');
+            canvas.width = viewport.width;
+            canvas.height = viewport.height;
+
+            await page.render({
+                canvasContext: canvas.getContext('2d'),
+                viewport: viewport
+            }).promise;
+
+            const blob = await new Promise(resolve => {
+                canvas.toBlob(resolve, 'image/jpeg', 0.92);
+            });
+
+            loading.style.display = 'none';
+            result.style.display = 'block';
+            resultText.textContent = '1 image created!';
+
+            downloadBtn.onclick = () => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = 'page-1.jpg';
+                a.click();
+                URL.revokeObjectURL(url);
+            };
+            return;
+        }
+
+        // For multiple pages, create ZIP
+        const zip = new JSZip();
 
         for (const pageIndex of sortedPages) {
             const page = await pdfDoc.getPage(pageIndex + 1);
-            const scale = 2; // 2x for better quality
+            const scale = 2;
             const viewport = page.getViewport({ scale });
 
             const canvas = document.createElement('canvas');
@@ -231,28 +268,16 @@ convertBtn.addEventListener('click', async () => {
 
         loading.style.display = 'none';
         result.style.display = 'block';
+        resultText.textContent = `${sortedPages.length} images created!`;
 
-        if (sortedPages.length === 1) {
-            resultText.textContent = '1 image created!';
-            downloadBtn.onclick = () => {
-                const url = URL.createObjectURL(zipBlob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'page-1.jpg';
-                a.click();
-                URL.revokeObjectURL(url);
-            };
-        } else {
-            resultText.textContent = `${sortedPages.length} images created!`;
-            downloadBtn.onclick = () => {
-                const url = URL.createObjectURL(zipBlob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'pdf-pages.zip';
-                a.click();
-                URL.revokeObjectURL(url);
-            };
-        }
+        downloadBtn.onclick = () => {
+            const url = URL.createObjectURL(zipBlob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'pdf-pages.zip';
+            a.click();
+            URL.revokeObjectURL(url);
+        };
     } catch (error) {
         loading.style.display = 'none';
         toolActions.style.display = 'flex';
