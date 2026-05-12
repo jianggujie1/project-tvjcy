@@ -39,9 +39,10 @@ dropZone.addEventListener('drop', (e) => {
     addFiles(pdfFiles);
 });
 
-// Click to browse
+// Click to browse (only when clicking drop zone itself, not label)
 dropZone.addEventListener('click', (e) => {
-    if (e.target === dropZone || e.target.closest('.drop-zone-content')) {
+    if (e.target === dropZone || e.target.classList.contains('drop-zone-content')) {
+        e.stopPropagation();
         fileInput.click();
     }
 });
