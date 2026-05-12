@@ -3,12 +3,33 @@
     margin-bottom: 24px;
 }
 
+.compress-tip {
+    background: #fffbeb;
+    border: 1px solid #fcd34d;
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.tip-icon {
+    font-size: 18px;
+}
+
+.tip-text {
+    font-size: 14px;
+    color: #92400e;
+}
+
 .quality-section h3 {
     font-size: 15px;
     font-weight: 600;
     margin-bottom: 16px;
     color: #475569;
     text-align: center;
+    margin-top: 16px;
 }
 
 .quality-options {
