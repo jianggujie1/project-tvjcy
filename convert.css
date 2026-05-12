@@ -1,0 +1,10 @@
+/* Convert to PDF - minimal custom styles */
+/* Most styles come from merge.css */
+
+.file-list .file-item {
+    cursor: grab;
+}
+
+.file-list .file-item:active {
+    cursor: grabbing;
+}
