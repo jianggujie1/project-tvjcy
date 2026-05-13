@@ -236,6 +236,76 @@ ul {
     margin-bottom: 48px;
 }
 
+.hero h2 {
+    font-size: 28px;
+    font-weight: 600;
+    color: #1e293b;
+    margin-bottom: 12px;
+}
+
+.content-page {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.content-page h1 {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 8px;
+}
+
+.page-updated {
+    color: #64748b;
+    font-size: 14px;
+    margin-bottom: 32px;
+}
+
+.policy-section {
+    margin-bottom: 32px;
+}
+
+.policy-section h2 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 12px;
+}
+
+.policy-section p {
+    color: #475569;
+    line-height: 1.7;
+    margin-bottom: 12px;
+}
+
+.policy-section ul {
+    margin-left: 24px;
+    margin-bottom: 12px;
+}
+
+.policy-section li {
+    color: #475569;
+    line-height: 1.7;
+    margin-bottom: 6px;
+}
+
+.policy-section a {
+    color: #3b82f6;
+    text-decoration: none;
+}
+
+.policy-section a:hover {
+    text-decoration: underline;
+}
+
+.tool-card:hover .tool-icon {
+    transform: scale(1.1);
+}
+    text-align: center;
+    margin-bottom: 48px;
+}
+
 /* Tools Grid */
 .tools-grid {
     display: grid;
