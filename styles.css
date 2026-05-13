@@ -566,7 +566,23 @@ ul {
 /* Responsive */
 @media (max-width: 768px) {
     .nav {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        overflow-x: auto;
+        scrollbar-width: none;
+        -ms-overflow-style: none;
+        padding: 4px 0;
+    }
+
+    .nav::-webkit-scrollbar {
         display: none;
+    }
+
+    .nav a {
+        white-space: nowrap;
+        padding: 8px 12px;
+        font-size: 14px;
     }
 
     .hero-title {
@@ -577,27 +593,20 @@ ul {
         grid-template-columns: 1fr;
     }
 
-.nav {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-    overflow-x: auto;
-    scrollbar-width: none;
-    -ms-overflow-style: none;
-    padding: 4px 0;
-}
-
-.nav::-webkit-scrollbar {
-    display: none;
-}
-
-.nav a {
-    white-space: nowrap;
-    padding: 8px 12px;
-}
-
     .pricing-grid {
         flex-direction: column;
         align-items: center;
+    }
+
+    .footer-inner {
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+    }
+
+    .footer-links {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 16px;
     }
 }
