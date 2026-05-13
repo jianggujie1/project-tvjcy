@@ -1,131 +1,159 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Convert to PDF Online — PDFNest</title>
-    <meta name="description" content="Convert images, Word, Excel to PDF online. Free, fast, no signup required.">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="merge.css">
+    <meta
+      name="description"
+      content="Convert images, Word, Excel to PDF online. Free, fast, no signup required."
+    />
+    <link rel="stylesheet" href="styles.css" />
     <script>
-        window.si = window.si || function () { (window.siq = window.siq || []).push(arguments); };
+      window.va =
+        window.va ||
+        function () {
+          (window.vaq = window.vaq || []).push(arguments);
+        };
+    </script>
+    <script defer src="/_vercel/insights/script.js"></script>
+    <link rel="stylesheet" href="merge.css" />
+    <script>
+      window.si =
+        window.si ||
+        function () {
+          (window.siq = window.siq || []).push(arguments);
+        };
     </script>
     <script defer src="/_vercel/speed-insights/script.js"></script>
     <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
-</head>
-<body>
+  </head>
+  <body>
     <!-- Header -->
     <header class="header">
-        <div class="container header-inner">
-            <a href="/" class="logo">PDFNest</a>
-            <nav class="nav">
-                <div class="nav-item-dropdown">
-                    <a href="#" class="nav-dropdown-btn">Tools</a>
-                    <div class="nav-dropdown-menu">
-                        <a href="merge.html" class="nav-dropdown-item">
-                            <span class="nav-dropdown-icon">⊕</span>
-                            Merge PDF
-                        </a>
-                        <a href="split.html" class="nav-dropdown-item">
-                            <span class="nav-dropdown-icon">✂</span>
-                            Split PDF
-                        </a>
-                        <a href="compress.html" class="nav-dropdown-item">
-                            <span class="nav-dropdown-icon">↔</span>
-                            Compress PDF
-                        </a>
-                        <a href="rotate.html" class="nav-dropdown-item">
-                            <span class="nav-dropdown-icon">↻</span>
-                            Rotate PDF
-                        </a>
-                        <a href="convert.html" class="nav-dropdown-item active">
-                            <span class="nav-dropdown-icon">↑</span>
-                            Convert to PDF
-                        </a>
-                        <a href="jpg.html" class="nav-dropdown-item">
-                            <span class="nav-dropdown-icon">🖼</span>
-                            PDF to JPG
-                        </a>
-                    </div>
-                </div>
-                <a href="#pricing">Pricing</a>
-                <a href="#blog">Blog</a>
-                <a href="#contact">Contact</a>
-            </nav>
-            <a href="/" class="btn btn-primary">Home</a>
-        </div>
+      <div class="container header-inner">
+        <a href="/" class="logo">PDFNest</a>
+        <nav class="nav">
+          <div class="nav-item-dropdown">
+            <a href="#" class="nav-dropdown-btn">Tools</a>
+            <div class="nav-dropdown-menu">
+              <a href="merge.html" class="nav-dropdown-item">
+                <span class="nav-dropdown-icon">⊕</span>
+                Merge PDF
+              </a>
+              <a href="split.html" class="nav-dropdown-item">
+                <span class="nav-dropdown-icon">✂</span>
+                Split PDF
+              </a>
+              <a href="compress.html" class="nav-dropdown-item">
+                <span class="nav-dropdown-icon">↔</span>
+                Compress PDF
+              </a>
+              <a href="rotate.html" class="nav-dropdown-item">
+                <span class="nav-dropdown-icon">↻</span>
+                Rotate PDF
+              </a>
+              <a href="convert.html" class="nav-dropdown-item active">
+                <span class="nav-dropdown-icon">↑</span>
+                Convert to PDF
+              </a>
+              <a href="jpg.html" class="nav-dropdown-item">
+                <span class="nav-dropdown-icon">🖼</span>
+                PDF to JPG
+              </a>
+            </div>
+          </div>
+          <a href="#pricing">Pricing</a>
+          <a href="#blog">Blog</a>
+          <a href="#contact">Contact</a>
+        </nav>
+        <a href="/" class="btn btn-primary">Home</a>
+      </div>
     </header>
 
     <!-- Tool Page -->
     <section class="tool-page">
-        <div class="container">
-            <div class="tool-header">
-                <h1>Convert to PDF Online</h1>
-                <p>Turn images (JPG, PNG) into PDF documents. Drag to reorder, then download.</p>
-            </div>
-
-            <!-- Drop Zone -->
-            <div class="drop-zone" id="dropZone">
-                <div class="drop-zone-content">
-                    <div class="drop-icon">🖼</div>
-                    <p>Drag & drop images here</p>
-                    <span>or</span>
-                    <label class="btn btn-primary">
-                        Browse Files
-                        <input type="file" id="fileInput" accept="image/*" multiple hidden>
-                    </label>
-                </div>
-            </div>
-
-            <!-- File List -->
-            <div class="file-list" id="fileList">
-                <div class="file-list-empty" id="emptyState">
-                    <p>No images added yet</p>
-                </div>
-            </div>
-
-            <!-- Actions -->
-            <div class="tool-actions" id="toolActions" style="display: none;">
-                <button class="btn btn-primary btn-large" id="convertBtn">Create PDF</button>
-                <button class="btn btn-outline" id="clearBtn">Clear All</button>
-            </div>
-
-            <!-- Result -->
-            <div class="result" id="result" style="display: none;">
-                <div class="result-success">
-                    <span class="result-icon">✓</span>
-                    <p>PDF created successfully!</p>
-                </div>
-                <button class="btn btn-primary btn-large" id="downloadBtn">Download PDF</button>
-                <button class="btn btn-outline" id="resetBtn">Process Another</button>
-            </div>
-
-            <!-- Loading -->
-            <div class="loading" id="loading" style="display: none;">
-                <div class="spinner"></div>
-                <p>Creating your PDF...</p>
-            </div>
+      <div class="container">
+        <div class="tool-header">
+          <h1>Convert to PDF Online</h1>
+          <p>
+            Turn images (JPG, PNG) into PDF documents. Drag to reorder, then
+            download.
+          </p>
         </div>
+
+        <!-- Drop Zone -->
+        <div class="drop-zone" id="dropZone">
+          <div class="drop-zone-content">
+            <div class="drop-icon">🖼</div>
+            <p>Drag & drop images here</p>
+            <span>or</span>
+            <label class="btn btn-primary">
+              Browse Files
+              <input
+                type="file"
+                id="fileInput"
+                accept="image/*"
+                multiple
+                hidden
+              />
+            </label>
+          </div>
+        </div>
+
+        <!-- File List -->
+        <div class="file-list" id="fileList">
+          <div class="file-list-empty" id="emptyState">
+            <p>No images added yet</p>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="tool-actions" id="toolActions" style="display: none">
+          <button class="btn btn-primary btn-large" id="convertBtn">
+            Create PDF
+          </button>
+          <button class="btn btn-outline" id="clearBtn">Clear All</button>
+        </div>
+
+        <!-- Result -->
+        <div class="result" id="result" style="display: none">
+          <div class="result-success">
+            <span class="result-icon">✓</span>
+            <p>PDF created successfully!</p>
+          </div>
+          <button class="btn btn-primary btn-large" id="downloadBtn">
+            Download PDF
+          </button>
+          <button class="btn btn-outline" id="resetBtn">Process Another</button>
+        </div>
+
+        <!-- Loading -->
+        <div class="loading" id="loading" style="display: none">
+          <div class="spinner"></div>
+          <p>Creating your PDF...</p>
+        </div>
+      </div>
     </section>
 
     <!-- Footer -->
     <footer class="footer">
-        <div class="container footer-inner">
-            <div class="footer-brand">
-                <div class="logo">PDFNest</div>
-                <p>Free online PDF tools. No signup, no ads.</p>
-            </div>
-            <div class="footer-links">
-                <a href="#">Privacy Policy</a>
-                <a href="#">Terms of Service</a>
-                <a href="#">Blog</a>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2026 PDFNest. All rights reserved.</p>
-            </div>
+      <div class="container footer-inner">
+        <div class="footer-brand">
+          <div class="logo">PDFNest</div>
+          <p>Free online PDF tools. No signup, no ads.</p>
         </div>
+        <div class="footer-links">
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Blog</a>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; 2026 PDFNest. All rights reserved.</p>
+        </div>
+      </div>
     </footer>
 
     <script src="convert.js"></script>
-</body>
+  </body>
 </html>
