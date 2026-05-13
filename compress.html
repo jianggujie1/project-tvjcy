@@ -172,11 +172,12 @@
           <div class="logo">PDFNest</div>
           <p>Free online PDF tools. No signup, no ads.</p>
         </div>
-        <div class="footer-links">
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Service</a>
-          <a href="#">Blog</a>
-        </div>
+<div class="footer-links">
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="terms.html">Terms of Service</a>
+                <a href="#">Blog</a>
+                <a href="#">Contact</a>
+            </div>
         <div class="footer-bottom">
           <p>&copy; 2026 PDFNest. All rights reserved.</p>
         </div>
@@ -184,5 +185,20 @@
     </footer>
 
     <script src="compress.js"></script>
-  </body>
+    <script>
+        const navBtn = document.querySelector('.nav-dropdown-btn');
+        const navMenu = document.querySelector('.nav-dropdown-menu');
+        if (navBtn && navMenu) {
+            navBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                navMenu.classList.toggle('show');
+            });
+            document.addEventListener('click', (e) => {
+                if (!navMenu.contains(e.target) && !navBtn.contains(e.target)) {
+                    navMenu.classList.remove('show');
+                }
+            });
+        }
+    </script>
+</body>
 </html>

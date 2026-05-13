@@ -1,188 +1,152 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Split PDF Online — PDFNest</title>
-    <meta
-      name="description"
-      content="Split a PDF into separate files or extract specific pages. Free, fast, no signup."
-    />
-    <link rel="stylesheet" href="styles.css" />
-    <script>
-      window.va =
-        window.va ||
-        function () {
-          (window.vaq = window.vaq || []).push(arguments);
-        };
-    </script>
-    <script defer src="/_vercel/insights/script.js"></script>
-    <link rel="stylesheet" href="merge.css" />
-    <link rel="stylesheet" href="split.css" />
-    <script>
-      window.si =
-        window.si ||
-        function () {
-          (window.siq = window.siq || []).push(arguments);
-        };
-    </script>
-    <script defer src="/_vercel/speed-insights/script.js"></script>
+    <meta name="description" content="Split a PDF into separate files or extract specific pages. Free, fast, no signup.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="merge.css">
+    <link rel="stylesheet" href="split.css">
     <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
-  </head>
-  <body>
+</head>
+<body>
     <!-- Header -->
     <header class="header">
-      <div class="container header-inner">
-        <a href="/" class="logo">PDFNest</a>
-        <nav class="nav">
-          <div class="nav-item-dropdown">
-            <a href="#" class="nav-dropdown-btn">Tools</a>
-            <div class="nav-dropdown-menu">
-              <a href="merge.html" class="nav-dropdown-item">
-                <span class="nav-dropdown-icon">⊕</span>
-                Merge PDF
-              </a>
-              <a href="split.html" class="nav-dropdown-item active">
-                <span class="nav-dropdown-icon">✂</span>
-                Split PDF
-              </a>
-              <a href="compress.html" class="nav-dropdown-item">
-                <span class="nav-dropdown-icon">↔</span>
-                Compress PDF
-              </a>
-              <a href="rotate.html" class="nav-dropdown-item">
-                <span class="nav-dropdown-icon">↻</span>
-                Rotate PDF
-              </a>
-              <a href="convert.html" class="nav-dropdown-item">
-                <span class="nav-dropdown-icon">↑</span>
-                Convert to PDF
-              </a>
-              <a href="jpg.html" class="nav-dropdown-item">
-                <span class="nav-dropdown-icon">🖼</span>
-                PDF to JPG
-              </a>
-            </div>
-          </div>
-          <a href="#pricing">Pricing</a>
-          <a href="#blog">Blog</a>
-          <a href="#contact">Contact</a>
-        </nav>
-        <a href="/" class="btn btn-primary">Home</a>
-      </div>
+        <div class="container header-inner">
+            <a href="/" class="logo">PDFNest</a>
+            <nav class="nav">
+                <div class="nav-item-dropdown">
+                    <a href="#" class="nav-dropdown-btn">Tools</a>
+                    <div class="nav-dropdown-menu">
+                        <a href="merge.html" class="nav-dropdown-item">⊕ Merge PDF</a>
+                        <a href="split.html" class="nav-dropdown-item active">✂ Split PDF</a>
+                        <a href="compress.html" class="nav-dropdown-item">↔ Compress PDF</a>
+                        <a href="rotate.html" class="nav-dropdown-item">↻ Rotate PDF</a>
+                        <a href="convert.html" class="nav-dropdown-item">↑ Convert to PDF</a>
+                        <a href="jpg.html" class="nav-dropdown-item">🖼 PDF to JPG</a>
+                    </div>
+                </div>
+                <a href="#pricing">Pricing</a>
+                <a href="#blog">Blog</a>
+                <a href="#contact">Contact</a>
+            </nav>
+            <a href="/" class="btn btn-primary">Home</a>
+        </div>
     </header>
 
     <!-- Tool Page -->
     <section class="tool-page">
-      <div class="container">
-        <div class="tool-header">
-          <h1>Split PDF Online</h1>
-          <p>Extract specific pages or split a PDF into separate files.</p>
-        </div>
-
-        <!-- Drop Zone -->
-        <div class="drop-zone" id="dropZone">
-          <div class="drop-zone-content">
-            <div class="drop-icon">📄</div>
-            <p>Drag & drop a PDF file here</p>
-            <span>or</span>
-            <label class="btn btn-primary">
-              Browse File
-              <input type="file" id="fileInput" accept=".pdf" hidden />
-            </label>
-          </div>
-        </div>
-
-        <!-- File Info (shown after upload) -->
-        <div class="file-list" id="fileInfo" style="display: none">
-          <div class="file-item">
-            <span class="file-icon">📄</span>
-            <div class="file-info">
-              <div class="file-name" id="pdfName">file.pdf</div>
-              <div class="file-size" id="pdfPages">0 pages</div>
+        <div class="container">
+            <div class="tool-header">
+                <h1>Split PDF Online</h1>
+                <p>Extract specific pages or split a PDF into separate files.</p>
             </div>
-            <button class="file-remove" id="removeFile">×</button>
-          </div>
-        </div>
 
-        <!-- Mode Selection -->
-        <div class="split-modes" id="splitModes" style="display: none">
-          <button class="mode-btn active" data-mode="pages">
-            Select Pages
-          </button>
-          <button class="mode-btn" data-mode="ranges">Page Ranges</button>
-        </div>
+            <!-- Drop Zone -->
+            <div class="drop-zone" id="dropZone">
+                <div class="drop-zone-content">
+                    <div class="drop-icon">📄</div>
+                    <p>Drag & drop a PDF file here</p>
+                    <span>or</span>
+                    <label class="btn btn-primary">
+                        Browse File
+                        <input type="file" id="fileInput" accept=".pdf" hidden>
+                    </label>
+                </div>
+            </div>
 
-        <!-- Page Grid -->
-        <div class="file-list" id="pageSelector" style="display: none">
-          <div class="page-grid" id="pageGrid"></div>
-          <div class="page-actions">
-            <button class="btn btn-outline btn-small" id="selectAll">
-              Select All
-            </button>
-            <button class="btn btn-outline btn-small" id="deselectAll">
-              Deselect All
-            </button>
-          </div>
-        </div>
+            <!-- File Info -->
+            <div class="file-list" id="fileInfo" style="display: none;">
+                <div class="file-item">
+                    <span class="file-icon">📄</span>
+                    <div class="file-info">
+                        <div class="file-name" id="pdfName">file.pdf</div>
+                        <div class="file-size" id="pdfPages">0 pages</div>
+                    </div>
+                    <button class="file-remove" id="removeFile">×</button>
+                </div>
+            </div>
 
-        <!-- Range Input -->
-        <div class="range-section" id="rangeSection" style="display: none">
-          <input
-            type="text"
-            class="range-input"
-            id="rangeInput"
-            placeholder="e.g. 1-3, 5, 7-10"
-          />
-          <p class="range-hint">Separate ranges with commas</p>
-        </div>
+            <!-- Mode Selection -->
+            <div class="split-modes" id="splitModes" style="display: none;">
+                <button class="mode-btn active" data-mode="pages">Select Pages</button>
+                <button class="mode-btn" data-mode="ranges">Page Ranges</button>
+            </div>
 
-        <!-- Actions -->
-        <div class="tool-actions" id="toolActions" style="display: none">
-          <button class="btn btn-primary btn-large" id="splitBtn" disabled>
-            Extract Pages
-          </button>
-          <button class="btn btn-outline" id="clearBtn">Clear</button>
-        </div>
+            <!-- Page Grid -->
+            <div class="file-list" id="pageSelector" style="display: none;">
+                <div class="page-grid" id="pageGrid"></div>
+                <div class="page-actions">
+                    <button class="btn btn-outline btn-small" id="selectAll">Select All</button>
+                    <button class="btn btn-outline btn-small" id="deselectAll">Deselect All</button>
+                </div>
+            </div>
 
-        <!-- Result -->
-        <div class="result" id="result" style="display: none">
-          <div class="result-success">
-            <span class="result-icon">✓</span>
-            <p id="resultText">PDF split successfully!</p>
-          </div>
-          <button class="btn btn-primary btn-large" id="downloadBtn">
-            Download
-          </button>
-          <button class="btn btn-outline" id="resetBtn">Process Another</button>
-        </div>
+            <!-- Range Input -->
+            <div class="range-section" id="rangeSection" style="display: none;">
+                <input type="text" class="range-input" id="rangeInput" placeholder="e.g. 1-3, 5, 7-10">
+                <p class="range-hint">Separate ranges with commas</p>
+            </div>
 
-        <!-- Loading -->
-        <div class="loading" id="loading" style="display: none">
-          <div class="spinner"></div>
-          <p>Splitting your PDF...</p>
+            <!-- Actions -->
+            <div class="tool-actions" id="toolActions" style="display: none;">
+                <button class="btn btn-primary btn-large" id="splitBtn" disabled>Extract Pages</button>
+                <button class="btn btn-outline" id="clearBtn">Clear</button>
+            </div>
+
+            <!-- Result -->
+            <div class="result" id="result" style="display: none;">
+                <div class="result-success">
+                    <span class="result-icon">✓</span>
+                    <p id="resultText">PDF split successfully!</p>
+                </div>
+                <button class="btn btn-primary btn-large" id="downloadBtn">Download</button>
+                <button class="btn btn-outline" id="resetBtn">Process Another</button>
+            </div>
+
+            <!-- Loading -->
+            <div class="loading" id="loading" style="display: none;">
+                <div class="spinner"></div>
+                <p>Splitting your PDF...</p>
+            </div>
         </div>
-      </div>
     </section>
 
     <!-- Footer -->
     <footer class="footer">
-      <div class="container footer-inner">
-        <div class="footer-brand">
-          <div class="logo">PDFNest</div>
-          <p>Free online PDF tools. No signup, no ads.</p>
+        <div class="container footer-inner">
+            <div class="footer-brand">
+                <div class="logo">PDFNest</div>
+                <p>Free online PDF tools. No signup, no ads.</p>
+            </div>
+            <div class="footer-links">
+                <a href="privacy.html">Privacy Policy</a>
+                <a href="terms.html">Terms of Service</a>
+                <a href="#">Blog</a>
+                <a href="#">Contact</a>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 PDFNest. All rights reserved.</p>
+            </div>
         </div>
-        <div class="footer-links">
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Service</a>
-          <a href="#">Blog</a>
-        </div>
-        <div class="footer-bottom">
-          <p>&copy; 2026 PDFNest. All rights reserved.</p>
-        </div>
-      </div>
     </footer>
 
     <script src="split.js"></script>
-  </body>
+    <script>
+        const navBtn = document.querySelector('.nav-dropdown-btn');
+        const navMenu = document.querySelector('.nav-dropdown-menu');
+        if (navBtn && navMenu) {
+            navBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                navMenu.classList.toggle('show');
+            });
+            document.addEventListener('click', (e) => {
+                if (!navMenu.contains(e.target) && !navBtn.contains(e.target)) {
+                    navMenu.classList.remove('show');
+                }
+            });
+        }
+    </script>
+</body>
 </html>

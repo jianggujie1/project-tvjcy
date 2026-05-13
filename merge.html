@@ -132,5 +132,21 @@
     </footer>
 
     <script src="merge.js"></script>
+    <script>
+        // Dropdown functionality
+        const navBtn = document.querySelector('.nav-dropdown-btn');
+        const navMenu = document.querySelector('.nav-dropdown-menu');
+        if (navBtn && navMenu) {
+            navBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                navMenu.classList.toggle('show');
+            });
+            document.addEventListener('click', (e) => {
+                if (!navMenu.contains(e.target) && !navBtn.contains(e.target)) {
+                    navMenu.classList.remove('show');
+                }
+            });
+        }
+    </script>
 </body>
 </html>
