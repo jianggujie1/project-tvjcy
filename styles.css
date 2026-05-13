@@ -302,9 +302,6 @@ ul {
 .tool-card:hover .tool-icon {
     transform: scale(1.1);
 }
-    text-align: center;
-    margin-bottom: 48px;
-}
 
 /* Tools Grid */
 .tools-grid {
